@@ -6,13 +6,15 @@ public class MovePlayer : MonoBehaviour
 {
     private float acceleration;
     private float turn;
+    
+     public float gravityModifier;
     public float speed =  20.0f;
     public float turnMultiplier = 2.0f;
     // Start is called before the first frame update
 
     void Start()
     {
-        
+        Physics.gravity *= gravityModifier;
     }
 
     // Update is called once per frame
