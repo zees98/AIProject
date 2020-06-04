@@ -14,7 +14,7 @@ public class CheckMyVision : MonoBehaviour
     public bool targetInSight = false;
 
     //Field of Vision
-    public float fieldofVision = 45f;
+    public float fieldofVision = 60f;
 
     //we need a reference to our target here
     private Transform target = null;
@@ -50,9 +50,13 @@ public class CheckMyVision : MonoBehaviour
         
         //check if within field of view
         if(angle <= fieldofVision)
+        {
+            Debug.Log("Police Is Approaching");
             return true;
-        else
+        }         
+        else 
             return false;
+        
     }
 
     //we need a function to check line of sight
@@ -95,8 +99,11 @@ public class CheckMyVision : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if(!other.CompareTag("Player"))
+        if(!other.CompareTag("Player")){
+            Debug.Log("");
             return;
+        }
+            
         targetInSight = false;
         
     }
