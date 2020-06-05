@@ -124,7 +124,7 @@ public class Enemy_FSM : MonoBehaviour {
         print ("Attacking enemy");
         while (currentState == ENEMY_STATES.attack) {
             agent.isStopped = false;
-            // agent.ResetPath();
+            agent.ResetPath();
             agent.SetDestination (playerTransform.position);
             while (agent.pathPending) {
 
@@ -133,7 +133,7 @@ public class Enemy_FSM : MonoBehaviour {
             if (agent.remainingDistance > agent.stoppingDistance) {
                 print ("Attack -> Chasing");
                 CurrentState = ENEMY_STATES.chase;
-                yield break;
+                // yield break;
             } else {
                 // Do something
 
