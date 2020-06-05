@@ -6,9 +6,8 @@ TagManager:
   tags:
   - NPCEyes
   - NPC
-  - Dest
+  - TrackProps
   - Terrain
-  - Name
   layers:
   - Default
   - TransparentFX

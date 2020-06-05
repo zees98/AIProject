@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class AI__FSM : MonoBehaviour {
-    private CheckMyVision checkMyVision;
+public class Enemy_FSM : MonoBehaviour {
+    private MyVision checkMyVision;
     private NavMeshAgent agent;
     private Transform playerTransform;
 
@@ -40,7 +40,7 @@ public class AI__FSM : MonoBehaviour {
     }
 
     private void Awake () {
-        checkMyVision = GetComponent<CheckMyVision> ();
+        checkMyVision = GetComponent<MyVision> ();
         agent = GetComponent<NavMeshAgent> ();
         playerHealth = GameObject.Find ("Player").GetComponent<Health> ();
         playerTransform = playerHealth.GetComponent<Transform> ();
@@ -48,9 +48,9 @@ public class AI__FSM : MonoBehaviour {
     // Start is called before the first frame update
     void Start () {
 
-        GameObject[] destinations = GameObject.FindGameObjectsWithTag ("Dest");
-        int pathIndex = Random.Range (0, destinations.Length);
-        patrolDestination = GameObject.Find ("Dest 1").GetComponent<Transform> ();
+        // GameObject[] destinations = GameObject.FindGameObjectsWithTag ("Dest");
+        // int pathIndex = Random.Range (0, destinations.Length);
+        patrolDestination = GameObject.Find ("End").GetComponent<Transform> ();
         //  print($"Path: {pathIndex}");
         CurrentState = ENEMY_STATES.patrol;
 
@@ -59,16 +59,17 @@ public class AI__FSM : MonoBehaviour {
     public IEnumerator EnemyPatrol () {
         print ("Patroling");
         while (currentState == ENEMY_STATES.patrol) {
-
-            checkMyVision.sensitivity = CheckMyVision.Sensitivity.HIGH;
+            agent.speed = 4;
+            checkMyVision.sensitivity = MyVision.Sensitivity.HIGH;
             agent.isStopped = false;
             agent.SetDestination (patrolDestination.position);
             while (agent.pathPending) {
 
                 yield return null;
             }
-            if (checkMyVision.targetInSight) {
+            while (checkMyVision.targetInSight) {
                 agent.isStopped = true;
+                print ("Patrol -> Chasing  ");
                 CurrentState = ENEMY_STATES.chase;
                 yield break;
             }
@@ -80,25 +81,35 @@ public class AI__FSM : MonoBehaviour {
     public IEnumerator EnemyChase () {
         print ("Chasing");
         while (currentState == ENEMY_STATES.chase) {
-            checkMyVision.sensitivity = CheckMyVision.Sensitivity.LOW;
+            checkMyVision.sensitivity = MyVision.Sensitivity.LOW;
             agent.isStopped = false;
+            // agent.acceleration = 600;
+            // agent.speed = 250;
             agent.ResetPath ();
             // agent.CalculatePath (checkMyVision.lastKnownSighting, agent.path);
             bool destSet = agent.SetDestination (checkMyVision.lastKnownSighting);
-
+            agent.speed = 500;
+            bool pending = agent.pathPending;
             while (agent.pathPending) {
+                print ("Looping running");
+
                 yield return null;
             }
-            // print($"Path Pending: {agent.pathPending}");
-            if (agent.remainingDistance <= agent.stoppingDistance) {
+            // print ($"Path Pending: {agent.pathPending}");
+            if (agent.remainingDistance <= agent.stoppingDistance + 1) {
                 agent.isStopped = true;
+                // print ($"Target In Sight for Chase ? {checkMyVision.targetInSight} ");
                 if (!checkMyVision.targetInSight) {
+                    print ("Chasing -> Patrol");
                     CurrentState = ENEMY_STATES.patrol;
+                    yield break;
                 } else {
-                    print ("Sqwitching to Attack!!!!!");
+                    // print ("Sqwitching to Attack!!!!!");
+                    print ("Chasing -> Attack");
                     CurrentState = ENEMY_STATES.attack;
+                    yield break;
                 }
-                yield break;
+                // yield break;
             }
             yield return null;
         }
@@ -116,13 +127,16 @@ public class AI__FSM : MonoBehaviour {
             // agent.ResetPath();
             agent.SetDestination (playerTransform.position);
             while (agent.pathPending) {
+
                 yield return null;
             }
             if (agent.remainingDistance > agent.stoppingDistance) {
+                print ("Attack -> Chasing");
                 CurrentState = ENEMY_STATES.chase;
                 yield break;
             } else {
                 // Do something
+
                 playerHealth.health -= maxDamage * Time.deltaTime;
             }
             yield return null;

@@ -7,11 +7,14 @@ namespace UnityStandardAssets.Vehicles.Car {
     public class CarUserControl : MonoBehaviour {
         private CarController m_Car; // the car controller we want to use
         private Rigidbody carRB;
+        public float gravityMod = 1.0f;
+        public float speedMod = 150.0f;
 
         private void Awake () {
             // get the car controller
             m_Car = GetComponent<CarController> ();
             carRB = GetComponent<Rigidbody> ();
+            Physics.gravity *= gravityMod;
         }
 
         private void FixedUpdate () {
@@ -21,7 +24,7 @@ namespace UnityStandardAssets.Vehicles.Car {
 
             float handbrake = CrossPlatformInputManager.GetAxis ("Jump");
             m_Car.Move (h, v, v, handbrake);
-            carRB.AddForce(Vector3.back * 100 * v ,ForceMode.Force);
+            carRB.AddForce(Vector3.back * speedMod * v ,ForceMode.Force);
 
         }
     }
