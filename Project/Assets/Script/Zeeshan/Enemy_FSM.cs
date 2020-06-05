@@ -84,16 +84,14 @@ public class Enemy_FSM : MonoBehaviour {
         while (currentState == ENEMY_STATES.chase) {
             checkMyVision.sensitivity = MyVision.Sensitivity.LOW;
             agent.isStopped = false;
-            agent.ResetPath ();
+            // agent.ResetPath ();
             // agent.CalculatePath (checkMyVision.lastKnownSighting, agent.path);
             bool destSet = agent.SetDestination (checkMyVision.lastKnownSighting);
             bool pending = agent.pathPending;
             while (agent.pathPending) {
-<<<<<<< Updated upstream
-=======
+
                 print ("Loop running");
 
->>>>>>> Stashed changes
                 yield return null;
             }
             print ($"Path Pending: {agent.pathPending}");
@@ -110,7 +108,7 @@ public class Enemy_FSM : MonoBehaviour {
                     CurrentState = ENEMY_STATES.attack;
                     yield break;
                 }
-                
+
             }
             yield return null;
         }
