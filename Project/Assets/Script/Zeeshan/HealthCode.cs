@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Health : MonoBehaviour {
+public class HealthCode : MonoBehaviour {
     [SerializeField]
     public float health = 100f;
     

@@ -10,7 +10,7 @@ public class Enemy_FSM : MonoBehaviour {
 
     private Transform patrolDestination;
 
-    private Health playerHealth;
+    private HealthCode playerHealth;
 
     public float maxDamage = 10f;
 
@@ -42,7 +42,7 @@ public class Enemy_FSM : MonoBehaviour {
     private void Awake () {
         checkMyVision = GetComponent<MyVision> ();
         agent = GetComponent<NavMeshAgent> ();
-        playerHealth = GameObject.Find ("Player").GetComponent<Health> ();
+        playerHealth = GameObject.Find ("Player").GetComponent<HealthCode> ();
         playerTransform = playerHealth.GetComponent<Transform> ();
     }
     // Start is called before the first frame update

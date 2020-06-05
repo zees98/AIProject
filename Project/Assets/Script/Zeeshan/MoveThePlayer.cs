@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MovePlayer : MonoBehaviour {
+public class MoveThePlayer : MonoBehaviour {
     private float acceleration;
     private float turn;
 

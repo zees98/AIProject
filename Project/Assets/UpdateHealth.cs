@@ -5,9 +5,9 @@ using UnityEngine.UI;
 
 public class UpdateHealth : MonoBehaviour {
     // Start is called before the first frame update
-    private Health player;
+    private HealthCode player;
     void Start () {
-        player = GameObject.Find ("Player").GetComponent<Health> ();
+        player = GameObject.Find ("Player").GetComponent<HealthCode> ();
     }
 
     // Update is called once per frame
