@@ -84,18 +84,20 @@ public class Enemy_FSM : MonoBehaviour {
         while (currentState == ENEMY_STATES.chase) {
             checkMyVision.sensitivity = MyVision.Sensitivity.LOW;
             agent.isStopped = false;
-            // agent.ResetPath ();
+            // agent.acceleration = 600;
+            // agent.speed = 250;
+            agent.ResetPath ();
             // agent.CalculatePath (checkMyVision.lastKnownSighting, agent.path);
             bool destSet = agent.SetDestination (checkMyVision.lastKnownSighting);
+            agent.speed = 500;
             bool pending = agent.pathPending;
             while (agent.pathPending) {
-
-                print ("Loop running");
+                print ("Looping running");
 
                 yield return null;
             }
-            print ($"Path Pending: {agent.pathPending}");
-            if (agent.remainingDistance <= agent.stoppingDistance) {
+            // print ($"Path Pending: {agent.pathPending}");
+            if (agent.remainingDistance <= agent.stoppingDistance + 1) {
                 agent.isStopped = true;
                 // print ($"Target In Sight for Chase ? {checkMyVision.targetInSight} ");
                 if (!checkMyVision.targetInSight) {
@@ -108,7 +110,7 @@ public class Enemy_FSM : MonoBehaviour {
                     CurrentState = ENEMY_STATES.attack;
                     yield break;
                 }
-
+                // yield break;
             }
             yield return null;
         }
@@ -132,7 +134,7 @@ public class Enemy_FSM : MonoBehaviour {
             if (agent.remainingDistance > agent.stoppingDistance) {
                 print ("Attack -> Chasing");
                 CurrentState = ENEMY_STATES.chase;
-                yield break;
+                // yield break;
             } else {
                 // Do something
 

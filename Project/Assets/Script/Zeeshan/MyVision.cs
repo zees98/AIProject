@@ -60,12 +60,15 @@ public class MyVision : MonoBehaviour {
 
     bool ClearLineofSight() {
         RaycastHit hit;
+        
+        Debug.DrawRay( myEyes.transform.position, -target.position * 5, Color.yellow );
         if (Physics.Raycast(myEyes.position, (target.position - myEyes.position).normalized, out hit, sphereCollider.radius)) {
             // print("Raycast Direction: " + -(target.position - myEyes.position).normalized);
             
             if (hit.transform.CompareTag("Player")) {
                 // print("RayCast Hitting: " + hit.collider.tag);
                 // Debug.Log ("Player Hit");
+                
                 return true;
             }
         //   print("RayCast Hitting: " + hit.collider.name);
