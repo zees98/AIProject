@@ -6,7 +6,7 @@ public class MyVision : MonoBehaviour {
     public enum Sensitivity { LOW, HIGH }
     public Sensitivity sensitivity = Sensitivity.HIGH;
     public bool targetInSight = false;
-
+    [SerializeField] private float angle;
     // Field of Vision
     public float fov = 45f;
 
@@ -48,7 +48,7 @@ public class MyVision : MonoBehaviour {
     bool InMyFOV() {
         Vector3 dirToTarget = target.position - myEyes.position;
         //Get Angle 
-        float angle = Vector3.Angle(myEyes.forward, dirToTarget);
+        angle = Vector3.Angle(myEyes.forward, dirToTarget);
 
        // print("Angle: " + angle);
         //
@@ -61,7 +61,7 @@ public class MyVision : MonoBehaviour {
     bool ClearLineofSight() {
         RaycastHit hit;
         
-        Debug.DrawRay( myEyes.transform.position, -target.position * 5, Color.yellow );
+        //Debug.DrawRay( myEyes.transform.position, (target.position - myEyes.position).normalized * 10, Color.yellow );
         if (Physics.Raycast(myEyes.position, (target.position - myEyes.position).normalized, out hit, sphereCollider.radius)) {
             // print("Raycast Direction: " + -(target.position - myEyes.position).normalized);
             

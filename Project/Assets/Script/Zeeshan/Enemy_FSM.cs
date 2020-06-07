@@ -3,14 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy_FSM : MonoBehaviour {
+public class Enemy_FSM : MonoBehaviour
+{
     private MyVision checkMyVision;
     private NavMeshAgent agent;
     private Transform playerTransform;
 
     private Transform patrolDestination;
 
-    private HealthCode playerHealth;
+    private HealthCode playerHealthCode;
 
     public float maxDamage = 10f;
 
@@ -20,57 +21,65 @@ public class Enemy_FSM : MonoBehaviour {
     // We need a property to get the current state
     [SerializeField]
     private ENEMY_STATES currentState;
-    public ENEMY_STATES CurrentState {
+    public ENEMY_STATES CurrentState
+    {
         get { return currentState; }
-        set {
+        set
+        {
             currentState = value;
-            StopAllCoroutines ();
-            switch (currentState) {
+            StopAllCoroutines();
+            switch (currentState)
+            {
                 case ENEMY_STATES.patrol:
-                    StartCoroutine (EnemyPatrol ());
+                    StartCoroutine(EnemyPatrol());
                     break;
                 case ENEMY_STATES.chase:
-                    StartCoroutine (EnemyChase ());
+                    StartCoroutine(EnemyChase());
                     break;
                 case ENEMY_STATES.attack:
-                    StartCoroutine (EnemyAttack ());
+                    StartCoroutine(EnemyAttack());
                     break;
             }
         }
     }
 
-    private void Awake () {
-        checkMyVision = GetComponent<MyVision> ();
-        agent = GetComponent<NavMeshAgent> ();
-        playerHealth = GameObject.Find ("Player").GetComponent<HealthCode> ();
-        playerTransform = playerHealth.GetComponent<Transform> ();
+    private void Awake()
+    {
+        checkMyVision = GetComponent<MyVision>();
+        agent = GetComponent<NavMeshAgent>();
+        playerHealthCode = GameObject.Find("Player").GetComponent<HealthCode>();
+        playerTransform = playerHealthCode.GetComponent<Transform>();
     }
     // Start is called before the first frame update
-    void Start () {
+    void Start()
+    {
 
         // GameObject[] destinations = GameObject.FindGameObjectsWithTag ("Dest");
         // int pathIndex = Random.Range (0, destinations.Length);
-        patrolDestination = GameObject.Find ("End").GetComponent<Transform> ();
+        patrolDestination = GameObject.Find("End").GetComponent<Transform>();
         //  print($"Path: {pathIndex}");
         CurrentState = ENEMY_STATES.patrol;
 
     }
 
-    public IEnumerator EnemyPatrol () {
-        print ("Patroling");
-        while (currentState == ENEMY_STATES.patrol) {
+    public IEnumerator EnemyPatrol()
+    {
+        print("Patroling");
+        while (currentState == ENEMY_STATES.patrol)
+        {
             agent.speed = 4;
             checkMyVision.sensitivity = MyVision.Sensitivity.HIGH;
             agent.isStopped = false;
-            agent.SetDestination (patrolDestination.position);
-            while (agent.pathPending) {
+            agent.SetDestination(patrolDestination.position);
+            while (agent.pathPending)
+            {
 
                 yield return null;
             }
-            if (checkMyVision.targetInSight) {
+            if (checkMyVision.targetInSight)
+            {
                 agent.isStopped = true;
-                print ("Patrol Target in sight");
-                print ("Patrol -> Chasing  ");
+                print("Patrol -> Chasing  ");
                 CurrentState = ENEMY_STATES.chase;
                 yield break;
             }
@@ -79,38 +88,40 @@ public class Enemy_FSM : MonoBehaviour {
         }
 
     }
-    public IEnumerator EnemyChase () {
-        print ("Chasing");
-        while (currentState == ENEMY_STATES.chase) {
+    public IEnumerator EnemyChase()
+    {
+        print("Chasing");
+        while (currentState == ENEMY_STATES.chase)
+        {
             checkMyVision.sensitivity = MyVision.Sensitivity.LOW;
             agent.isStopped = false;
             // agent.acceleration = 600;
             // agent.speed = 250;
-            agent.ResetPath ();
+            agent.ResetPath();
             // agent.CalculatePath (checkMyVision.lastKnownSighting, agent.path);
-            bool destSet = agent.SetDestination (checkMyVision.lastKnownSighting);
-            agent.speed = 500;
+            bool destSet = agent.SetDestination(checkMyVision.lastKnownSighting);
             bool pending = agent.pathPending;
-            while (agent.pathPending) {
-                print ("Looping running");
-
+            while (agent.pathPending)
+            {
                 yield return null;
             }
-            // print ($"Path Pending: {agent.pathPending}");
-            if (agent.remainingDistance <= agent.stoppingDistance + 1) {
+            print($"Path Pending: {agent.pathPending}");
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
                 agent.isStopped = true;
                 // print ($"Target In Sight for Chase ? {checkMyVision.targetInSight} ");
-                if (!checkMyVision.targetInSight) {
-                    print ("Chasing -> Patrol");
+                if (!checkMyVision.targetInSight)
+                {
+                    print("Chasing -> Patrol");
                     CurrentState = ENEMY_STATES.patrol;
-                    yield break;
-                } else {
-                    // print ("Sqwitching to Attack!!!!!");
-                    print ("Chasing -> Attack");
-                    CurrentState = ENEMY_STATES.attack;
-                    yield break;
                 }
-                // yield break;
+                else
+                {
+                    // print ("Sqwitching to Attack!!!!!");
+                    print("Chasing -> Attack");
+                    CurrentState = ENEMY_STATES.attack;
+                }
+                yield break;
             }
             yield return null;
         }
@@ -121,24 +132,30 @@ public class Enemy_FSM : MonoBehaviour {
         // print("Agent Remaining Distance: " + agent.remainingDistance);
         //  print("Agent Stopping Distance: " + agent.stoppingDistance);
     }
-    public IEnumerator EnemyAttack () {
-        print ("Attacking enemy");
-        while (currentState == ENEMY_STATES.attack) {
+    public IEnumerator EnemyAttack()
+    {
+        print("Attacking enemy");
+        while (currentState == ENEMY_STATES.attack)
+        {
             agent.isStopped = false;
             // agent.ResetPath();
-            agent.SetDestination (playerTransform.position);
-            while (agent.pathPending) {
+            agent.SetDestination(playerTransform.position);
+            while (agent.pathPending)
+            {
 
                 yield return null;
             }
-            if (agent.remainingDistance > agent.stoppingDistance) {
-                print ("Attack -> Chasing");
+            if (agent.remainingDistance > agent.stoppingDistance)
+            {
+                print("Attack -> Chasing");
                 CurrentState = ENEMY_STATES.chase;
-                // yield break;
-            } else {
+                yield break;
+            }
+            else
+            {
                 // Do something
 
-                playerHealth.health -= maxDamage * Time.deltaTime;
+                playerHealthCode.health -= maxDamage * Time.deltaTime;
             }
             yield return null;
         }
@@ -147,7 +164,8 @@ public class Enemy_FSM : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
 
     }
 }
