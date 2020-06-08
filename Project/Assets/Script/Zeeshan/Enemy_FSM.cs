@@ -114,14 +114,16 @@ public class Enemy_FSM : MonoBehaviour
                 {
                     print("Chasing -> Patrol");
                     CurrentState = ENEMY_STATES.Patrol;
+                    yield break;
                 }
                 else
                 {
                     // print ("Sqwitching to Attack!!!!!");
                     print("Chasing -> Attack");
                     CurrentState = ENEMY_STATES.Attack;
+                    yield break;
                 }
-                yield break;
+               
             }
             yield return null;
         }

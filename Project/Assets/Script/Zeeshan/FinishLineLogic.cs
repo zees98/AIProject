@@ -23,7 +23,7 @@ public class FinishLineLogic : MonoBehaviour
     {
 
         //If Player collides with the finishline empty object then the game ends and Movement controls are deleted
-        if (other.CompareTag("Player"))
+        if (other.gameObject.CompareTag("Player"))
         {
             Debug.Log("Player Wins");
             Destroy(player.GetComponent<MoveThePlayer>());
@@ -33,7 +33,7 @@ public class FinishLineLogic : MonoBehaviour
                 "Player 1";
 
         }
-        else if (other.CompareTag("NPC"))
+        else if (other.gameObject.CompareTag("NPC"))
         {
             Debug.Log("NPC Wins");
             Destroy(player.GetComponent<MoveThePlayer>());
