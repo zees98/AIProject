@@ -31,13 +31,13 @@ public class Enemy_FSM : MonoBehaviour
             switch (currentState)
             {
                 case ENEMY_STATES.Patrol:
-                    StartCoroutine(EnemyPatrol());
+                    StartCoroutine(AIPatrol());
                     break;
                 case ENEMY_STATES.Chase:
-                    StartCoroutine(EnemyChase());
+                    StartCoroutine(AIChase());
                     break;
                 case ENEMY_STATES.Attack:
-                    StartCoroutine(EnemyAttack());
+                    StartCoroutine(AIAttack());
                     break;
             }
         }
@@ -62,9 +62,9 @@ public class Enemy_FSM : MonoBehaviour
 
     }
 
-    public IEnumerator EnemyPatrol()
+    public IEnumerator AIPatrol()
     {
-        print("Patroling");
+       // print("Patroling");
         while (currentState == ENEMY_STATES.Patrol)
         {
             //agent.speed = 4;
@@ -79,7 +79,7 @@ public class Enemy_FSM : MonoBehaviour
             if (checkMyVision.targetInSight)
             {
                 agent.isStopped = true;
-                print("Patrol -> Chasing  ");
+            //    print("Patrol -> Chasing  ");
                 CurrentState = ENEMY_STATES.Chase;
                 yield break;
             }
@@ -88,9 +88,9 @@ public class Enemy_FSM : MonoBehaviour
         }
 
     }
-    public IEnumerator EnemyChase()
+    public IEnumerator AIChase()
     {
-        print("Chasing");
+      //  print("Chasing");
         while (currentState == ENEMY_STATES.Chase)
         {
             checkMyVision.sensitivity = MyVision.Sensitivity.LOW;
@@ -105,21 +105,21 @@ public class Enemy_FSM : MonoBehaviour
             {
                 yield return null;
             }
-            print($"Path Pending: {agent.pathPending}");
+          //  print($"Path Pending: {agent.pathPending}");
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 agent.isStopped = true;
                 // print ($"Target In Sight for Chase ? {checkMyVision.targetInSight} ");
                 if (!checkMyVision.targetInSight)
                 {
-                    print("Chasing -> Patrol");
+               //     print("Chasing -> Patrol");
                     CurrentState = ENEMY_STATES.Patrol;
                     yield break;
                 }
                 else
                 {
                     // print ("Sqwitching to Attack!!!!!");
-                    print("Chasing -> Attack");
+              //      print("Chasing -> Attack");
                     CurrentState = ENEMY_STATES.Attack;
                     yield break;
                 }
@@ -127,16 +127,11 @@ public class Enemy_FSM : MonoBehaviour
             }
             yield return null;
         }
-        // agent.acceleration = 600;
-        // print(checkMyVision.lastKnownSighting);
-        // print("Dest Set: " + destSet);
-        //   print("Path Invalid: " + (agent.path.status == NavMeshPathStatus.PathInvalid));
-        // print("Agent Remaining Distance: " + agent.remainingDistance);
-        //  print("Agent Stopping Distance: " + agent.stoppingDistance);
+       
     }
-    public IEnumerator EnemyAttack()
+    public IEnumerator AIAttack()
     {
-        print("Attacking enemy");
+      //  print("Attacking enemy");
         while (currentState == ENEMY_STATES.Attack)
         {
             agent.isStopped = false;
@@ -149,13 +144,13 @@ public class Enemy_FSM : MonoBehaviour
             }
             if (agent.remainingDistance > agent.stoppingDistance)
             {
-                print("Attack -> Chasing");
+        //        print("Attack -> Chasing");
                 CurrentState = ENEMY_STATES.Chase;
                 yield break;
             }
             else
             {
-                // Do something
+               
 
                 playerHealthCode.health -= maxDamage * Time.deltaTime;
             }

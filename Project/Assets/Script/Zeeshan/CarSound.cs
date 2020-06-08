@@ -6,137 +6,149 @@ public class CarSound : MonoBehaviour
 {
 
     public AudioSource[] clips;
-    private bool isPlayerMoving =false;
-    private bool isTurboOn = false;
+    private MoveThePlayer moveTheplayer;
+    private bool isPlayerMoving;
+    private bool isTurboOn;
 
-
-   /* public enum CarState
-    {
-        Stopped,
-        Moving,
-        TurboMove,
-    }
-    [SerializeField]
-    private CarState currentState;
-    public CarState CurrentState
-    {
-        get { return currentState; }
-        set
+    /*
+        public enum CarState
         {
-            currentState = value;
-            StopAllCoroutines();
-            switch (currentState) {
-                case CarState.Stopped:
-                  StartCoroutine(CarStopped());
-                    break;
-                case CarState.Moving:
-                  StartCoroutine(CarMoving());
-                    break;
-                case CarState.TurboMove:
-                    StartCoroutine(TurboMove());
-                    break;
-            }
+            Stopped,
+            Moving,
+            TurboMove,
         }
-    }
-    public IEnumerator CarStopped() {
-        print("Stopped");
-       while (currentState == CarState.Stopped)
+        [SerializeField]
+        private CarState currentState;
+        public CarState CurrentState
         {
-            //Change Audio Source to Engine Sound
-            if (!clips[0].isPlaying)
+            get { return currentState; }
+            set
             {
-                clips[2].Stop();
-                clips[1].Stop();
-                clips[0].Play();
-            }
-            if (isPlayerMoving)
-            {
-                CurrentState = CarState.Moving;
-                yield break;
-            }
-            
-
-            yield return null;
-        }
-    }
-    public IEnumerator CarMoving() {
-        print("Moving");
-        while (currentState == CarState.Moving)
-        {
-            //Change Audio Source to Moving 
-            if (!clips[1].isPlaying)
-            {
-                clips[2].Stop();
-                clips[1].Play();
-                clips[0].Stop();
-            }
-            if (isTurboOn)
+                currentState = value;
+                StopAllCoroutines();
+                switch (currentState)
                 {
-                    CurrentState = CarState.TurboMove;
+                    case CarState.Stopped:
+                        StartCoroutine(CarStopped());
+                        break;
+                    case CarState.Moving:
+                        StartCoroutine(CarMoving());
+                        break;
+                    case CarState.TurboMove:
+                        StartCoroutine(TurboMove());
+                        break;
+                }
+            }
+        }
+
+        private void Awake()
+        {
+
+            //isPlayerMoving = GameObject.Find("Player").GetComponent<MoveThePlayer>().isMoving;
+            //isTurboOn = GameObject.Find("Player").GetComponent<MoveThePlayer>().turbo;
+        }
+        // Start is called before the first frame update
+
+        void Start()
+        {
+            moveTheplayer = GameObject.Find("Player").GetComponent<MoveThePlayer>();
+            CurrentState = CarState.Stopped;
+        }
+        public IEnumerator CarStopped()
+        {
+            print("Stpped");
+            while (currentState == CarState.Stopped)
+            {
+
+                if (!clips[0].isPlaying)
+                {
+                    clips[2].Stop();
+                    clips[1].Stop();
+                    clips[0].Play();
+                }
+                if (moveTheplayer.isMoving)
+                {
+                    print("Stop -> Moving");
+                    CurrentState = CarState.Moving;
+
                     yield break;
                 }
 
-            if(!isPlayerMoving)
-            {
-                CurrentState = CarState.Stopped;
-                yield break;
-           }
-            yield return null;
-        }
-    }
-    
-    public IEnumerator TurboMove() {
-        print("Turbo");
-        //Change Audio Source to Turbo Sound
-        while (currentState == CarState.TurboMove) {
+                yield return null;
+            }
 
-            if (!clips[2].isPlaying)
+        }
+        public IEnumerator CarMoving()
+        {
+            print("M<ovign");
+            while (currentState == CarState.Moving)
             {
-                clips[2].Play();
-                clips[1].Stop();
-                clips[0].Stop();
-            }
-            if (!isPlayerMoving)
-            {
-                CurrentState = CarState.Stopped;
-                yield break;
-            }
-            else
-            {
-                if (!isTurboOn)
+                if (!clips[1].isPlaying)
                 {
+                    clips[2].Stop();
+                    clips[1].Play();
+                    clips[0].Stop();
+
+                    if (moveTheplayer.turbo)
+                    {
+                        print("Moving -> Turbo");
+                        CurrentState = CarState.TurboMove;
+                        yield break;
+
+                    }
+                   else if (!moveTheplayer.isMoving)
+                    {
+                        CurrentState = CarState.Stopped;
+                        yield break;
+                    }
+
+                }
+
+                yield return null;
+            }
+        }
+        public IEnumerator TurboMove()
+        {
+            print("Turbo");
+            while (currentState == CarState.TurboMove)
+            {
+
+                if (!clips[2].isPlaying)
+                {
+                    clips[2].Play();
+                    clips[1].Stop();
+                    clips[0].Stop();
+                }
+                if (moveTheplayer.isMoving && !moveTheplayer.turbo)
+                {
+                    print("Attack -> Chasing");
                     CurrentState = CarState.Moving;
                     yield break;
                 }
+                else if (!moveTheplayer.isMoving)
+                {
+                    // Do something
+
+                    CurrentState = CarState.TurboMove;
+                    yield break;
+                }
+                yield return null;
             }
-            yield return null; 
+
+            yield break;
         }
-        
-        
-    }
-
-
-    private void Awake()
-    {
-        isPlayerMoving = GameObject.Find("Player").GetComponent<MoveThePlayer>().isMoving;
-        isTurboOn= GameObject.Find("Player").GetComponent<MoveThePlayer>().turbo;
-    }
-    // Start is called before the first frame update
-
+        */
+    // Update is called once per frame
     void Start()
     {
-        CurrentState = CarState.Stopped;
+        moveTheplayer = GameObject.Find("Player").GetComponent<MoveThePlayer>();
+        
     }
-    */
 
-
-
-    // Update is called once per frame
-    
     void Update()
     {
-        isPlayerMoving = GameObject.Find("Player").GetComponent<MoveThePlayer>().isMoving;
-        isTurboOn = GameObject.Find("Player").GetComponent<MoveThePlayer>().turbo;
+        isPlayerMoving = moveTheplayer.isMoving;
+        isTurboOn =moveTheplayer.turbo;
         if (isPlayerMoving)
         {
             if (isTurboOn)
@@ -162,18 +174,21 @@ public class CarSound : MonoBehaviour
         }
         else
         {
-            
+
             clips[1].Stop();
             clips[2].Stop();
             if (!clips[0].isPlaying)
             {
 
-                
+
                 clips[0].Play();
             }
         }
 
-       
+
     }
     
+
+
+
 }
