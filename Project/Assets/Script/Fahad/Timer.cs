@@ -23,7 +23,7 @@ public class Timer : MonoBehaviour
        
         //  Gameover.gameover="";
         currenttime += 1*Time.deltaTime;
-        timetext.text = currenttime.ToString("0");
+        timetext.text = "Timer: "+currenttime.ToString("0");
        
        
 
