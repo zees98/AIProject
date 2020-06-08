@@ -270,9 +270,9 @@ GameObject:
   m_Component:
   - component: {fileID: 122794030}
   - component: {fileID: 122794029}
-  - component: {fileID: 122794028}
   - component: {fileID: 122794031}
   - component: {fileID: 122794032}
+  - component: {fileID: 122794028}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -289,12 +289,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 122794027}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 10b7904a236cfd842a514a43bbf56abc, type: 3}
+  m_Script: {fileID: 11500000, guid: 079ce7f65a704c34cbeb7a60d904a667, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gravityModifier: 40
-  speed: 60
-  turnMultiplier: 50
+  gravityModifier: 2
+  speed: 20
+  turnMultiplier: 20
   orginalrotation: {x: 0, y: 0, z: 0, w: 0}
 --- !u!65 &122794029
 BoxCollider:
@@ -317,7 +317,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 122794027}
   m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
-  m_LocalPosition: {x: 221.3, y: 3.24, z: 891.3}
+  m_LocalPosition: {x: 221.3, y: 3.24, z: 889.52}
   m_LocalScale: {x: 2.6327026, y: 1.3084699, z: 1}
   m_Children:
   - {fileID: 753879990}
@@ -8442,5 +8442,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 79570b0c00bc5a742930e96b7d3e4312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  currentState: 1
   maxDamage: 10
+  currentState: 1
