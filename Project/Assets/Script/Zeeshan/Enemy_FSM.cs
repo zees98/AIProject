@@ -67,7 +67,7 @@ public class Enemy_FSM : MonoBehaviour
         print("Patroling");
         while (currentState == ENEMY_STATES.Patrol)
         {
-            agent.speed = 4;
+            //agent.speed = 4;
             checkMyVision.sensitivity = MyVision.Sensitivity.HIGH;
             agent.isStopped = false;
             agent.SetDestination(PatrolDestination.position);

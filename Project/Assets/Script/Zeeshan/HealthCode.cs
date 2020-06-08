@@ -18,4 +18,13 @@ public class HealthCode : MonoBehaviour {
             }
         }
     }
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.name != "Terrain")
+            health -= 10;
+        if(health<= 0)
+        {
+            Destroy(gameObject.GetComponent<MoveThePlayer>());
+        }
+    }
 }
