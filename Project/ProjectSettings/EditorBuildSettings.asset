@@ -17,4 +17,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/Zeeshan.unity
     guid: a9222eb2874340746be7a3dacbcbad0c
+  - enabled: 0
+    path: Assets/Scenes/GAMEOVER.unity
+    guid: b665ce67fe825974e90842207e2229df
   m_configObjects: {}

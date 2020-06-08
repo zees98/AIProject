@@ -16,8 +16,11 @@ public class Won : MonoBehaviour
     }
        private void OnTriggerStay(Collider other)
     {
+        if(other.CompareTag("Player"))
         Debug.Log("YOU WON");
-        SceneManager.LoadScene(level);
+        else  if(other.CompareTag("Enemy"))
+        Debug.Log("YOU Lost");
+        
     
     }
 
