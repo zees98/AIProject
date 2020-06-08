@@ -179,9 +179,8 @@ public class AI_FSM : MonoBehaviour {
     }
     // Start is called before the first frame update
     void Start () {
-
-        patrolDestination = GameObject.Find ("Destination").GetComponent<Transform> ();
-
+        GameObject[] destinations = GameObject.FindGameObjectsWithTag("Dest");
+        patrolDestination = destinations[Random.Range(0,destinations.Length)].GetComponent<Transform> ();
         CurrentState = ENEMY_STATES.patrol;
 
     }
