@@ -12,6 +12,8 @@ TagManager:
   - NPC
   - Dest
   - Enemy
+  - Title
+  - coin
   layers:
   - Default
   - TransparentFX

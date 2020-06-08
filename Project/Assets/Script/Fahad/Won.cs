@@ -1,33 +1,44 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+
 
 public class Won : MonoBehaviour
 {
-    [SerializeField]private string level;
-    // Start is called before the first frame update
+  private GameObject player;
+    Text winText;
     void Start()
     {
-      
-     
-    
-        
-    }
-       private void OnTriggerStay(Collider other)
-    {
-        if(other.CompareTag("Player"))
-        Debug.Log("YOU WON");
-        else  if(other.CompareTag("Enemy"))
-        Debug.Log("YOU Lost");
-        
-    
+        player = GameObject.Find("Player");
+        winText = GameObject.Find("Title").GetComponent<Text>();
     }
 
     // Update is called once per frame
     void Update()
     {
-      
-       
+        
+    }
+    private void OnTriggerEnter(Collider other)
+    {
+
+        //If Player collides with the finishline empty object then the game ends and Movement controls are deleted
+        if (other.gameObject.CompareTag("Player"))
+        {
+            // Debug.Log("Player Wins");
+            // Destroy(player.GetComponent<MovePlayer>());
+            // Destroy(gameObject);
+            winText.text = "Winner\n" +
+                "Player 1";
+
+        }
+        else if (other.gameObject.CompareTag("Enemy"))
+        {
+            // Debug.Log("NPC Wins");
+            // Destroy(gameObject);
+            winText.text = "Winner\n" +
+                "NPC";
+        }
+
     }
 }

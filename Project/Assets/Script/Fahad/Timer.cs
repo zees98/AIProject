@@ -5,8 +5,8 @@ using UnityEngine.UI;
 
 public class Timer : MonoBehaviour
 {
-    private float currenttime = 59f;
-    public float startingTime =59f;
+    private float currenttime = 0f;
+    public float startingTime =0f;
 
      Text timetext;
 
@@ -22,12 +22,9 @@ public class Timer : MonoBehaviour
     {
        
         //  Gameover.gameover="";
-        currenttime -= 1*Time.deltaTime;
-        timetext.text = currenttime.ToString("0");
-        if(currenttime<0){
-            Debug.Log("FFF");
-             timetext.text = 0f.ToString("0");
-        }
+        currenttime += 1*Time.deltaTime;
+        timetext.text = "Timer: "+currenttime.ToString("0");
+       
        
 
     }
