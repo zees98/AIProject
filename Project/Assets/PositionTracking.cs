@@ -4,9 +4,8 @@ using UnityEngine;
 using UnityEngine.UI;
 public class PositionTracking : MonoBehaviour
 {
-    int position;
+    public int position;
     public Transform AI, player;
-    public float distance;
     private Text positionText;
     // Start is called before the first frame update
     void Start()
@@ -17,9 +16,9 @@ public class PositionTracking : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        distance = player.position.normalized.magnitude - AI.position.normalized.magnitude;
+       // distance = player.position.normalized.magnitude - AI.position.normalized.magnitude;
         // print(distance);
-        var distance  = AI.position - player.position;
+       var  distance  = AI.position - player.position;
         var dProduct = Vector3.Dot(distance, AI.forward);
         if (dProduct > 0)
         {
