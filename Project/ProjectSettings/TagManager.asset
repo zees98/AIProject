@@ -12,6 +12,7 @@ TagManager:
   - NPC
   - Dest
   - Enemy
+  - Title
   layers:
   - Default
   - TransparentFX
