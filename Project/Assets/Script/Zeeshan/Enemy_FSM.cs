@@ -9,14 +9,14 @@ public class Enemy_FSM : MonoBehaviour
     private NavMeshAgent agent;
     private Transform playerTransform;
 
-    private Transform patrolDestination;
+    private Transform PatrolDestination;
 
     private HealthCode playerHealthCode;
 
     public float maxDamage = 10f;
 
     // Enums to keep states
-    public enum ENEMY_STATES { patrol, chase, attack }
+    public enum ENEMY_STATES { Patrol, Chase, Attack }
 
     // We need a property to get the current state
     [SerializeField]
@@ -30,13 +30,13 @@ public class Enemy_FSM : MonoBehaviour
             StopAllCoroutines();
             switch (currentState)
             {
-                case ENEMY_STATES.patrol:
+                case ENEMY_STATES.Patrol:
                     StartCoroutine(EnemyPatrol());
                     break;
-                case ENEMY_STATES.chase:
+                case ENEMY_STATES.Chase:
                     StartCoroutine(EnemyChase());
                     break;
-                case ENEMY_STATES.attack:
+                case ENEMY_STATES.Attack:
                     StartCoroutine(EnemyAttack());
                     break;
             }
@@ -56,21 +56,21 @@ public class Enemy_FSM : MonoBehaviour
 
         // GameObject[] destinations = GameObject.FindGameObjectsWithTag ("Dest");
         // int pathIndex = Random.Range (0, destinations.Length);
-        patrolDestination = GameObject.Find("End").GetComponent<Transform>();
+        PatrolDestination = GameObject.Find("End").GetComponent<Transform>();
         //  print($"Path: {pathIndex}");
-        CurrentState = ENEMY_STATES.patrol;
+        CurrentState = ENEMY_STATES.Patrol;
 
     }
 
     public IEnumerator EnemyPatrol()
     {
         print("Patroling");
-        while (currentState == ENEMY_STATES.patrol)
+        while (currentState == ENEMY_STATES.Patrol)
         {
             agent.speed = 4;
             checkMyVision.sensitivity = MyVision.Sensitivity.HIGH;
             agent.isStopped = false;
-            agent.SetDestination(patrolDestination.position);
+            agent.SetDestination(PatrolDestination.position);
             while (agent.pathPending)
             {
 
@@ -80,7 +80,7 @@ public class Enemy_FSM : MonoBehaviour
             {
                 agent.isStopped = true;
                 print("Patrol -> Chasing  ");
-                CurrentState = ENEMY_STATES.chase;
+                CurrentState = ENEMY_STATES.Chase;
                 yield break;
             }
 
@@ -91,7 +91,7 @@ public class Enemy_FSM : MonoBehaviour
     public IEnumerator EnemyChase()
     {
         print("Chasing");
-        while (currentState == ENEMY_STATES.chase)
+        while (currentState == ENEMY_STATES.Chase)
         {
             checkMyVision.sensitivity = MyVision.Sensitivity.LOW;
             agent.isStopped = false;
@@ -113,13 +113,13 @@ public class Enemy_FSM : MonoBehaviour
                 if (!checkMyVision.targetInSight)
                 {
                     print("Chasing -> Patrol");
-                    CurrentState = ENEMY_STATES.patrol;
+                    CurrentState = ENEMY_STATES.Patrol;
                 }
                 else
                 {
                     // print ("Sqwitching to Attack!!!!!");
                     print("Chasing -> Attack");
-                    CurrentState = ENEMY_STATES.attack;
+                    CurrentState = ENEMY_STATES.Attack;
                 }
                 yield break;
             }
@@ -135,7 +135,7 @@ public class Enemy_FSM : MonoBehaviour
     public IEnumerator EnemyAttack()
     {
         print("Attacking enemy");
-        while (currentState == ENEMY_STATES.attack)
+        while (currentState == ENEMY_STATES.Attack)
         {
             agent.isStopped = false;
             // agent.ResetPath();
@@ -148,7 +148,7 @@ public class Enemy_FSM : MonoBehaviour
             if (agent.remainingDistance > agent.stoppingDistance)
             {
                 print("Attack -> Chasing");
-                CurrentState = ENEMY_STATES.chase;
+                CurrentState = ENEMY_STATES.Chase;
                 yield break;
             }
             else
